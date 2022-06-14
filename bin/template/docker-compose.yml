@@ -1,0 +1,41 @@
+version: "3"
+services:
+  db:
+    container_name: mysql_backend
+    image: mysql:5.7
+    ports:
+      - 6000:3306
+    volumes:
+      - E:\projects\mysql:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: webapp_db
+      MYSQL_ROOT_PASSWORD: 970716
+
+  backend:
+    container_name: backend_server
+    build: ./backend
+    image: backend:$BACKEND_COMMIT
+    ports:
+      - 7001:7001
+    restart: always
+    depends_on:
+      - db
+  
+  qingyun:
+    container_name: qingyun_middle
+    build: ./middle
+    image: qingyun:$MIDDLE_COMMIT
+    ports:
+      - 8000:8000
+    restart: always
+
+  blog:
+    container_name: blog_front
+    build: ./frontend
+    image: blog:$BLOG_COMMIT
+    ports:
+      - 3000:3000
+    restart: always
+
+  
