@@ -1,4 +1,6 @@
 {
+  "name": "deploy",
+  "bin": "bin/dp.js",
   "type": "module",
   "scripts": {
     "clear": "node ./bin/dp.js clear",
