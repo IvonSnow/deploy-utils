@@ -1,4 +1,4 @@
-#!node
+#!/usr/bin/node
 import chalk from "chalk";
 import { Command } from "commander";
 import initProject from "./script/init.js";
