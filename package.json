@@ -1,6 +1,6 @@
 {
   "name": "deploy-util",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "bin": "bin/dp.js",
   "scripts": {
     "clear": "node ./bin/dp.js clear",
