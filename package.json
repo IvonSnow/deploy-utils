@@ -1,17 +1,20 @@
 {
-  "name": "deploy",
+  "name": "deploy-util",
+  "version": "0.1.1",
   "bin": "bin/dp.js",
-  "type": "module",
   "scripts": {
     "clear": "node ./bin/dp.js clear",
-    "test": "node ./bin/dp.js init"
+    "init": "node ./bin/dp.js init",
+    "test": "node ./bin/dp.js --help"
   },
   "dependencies": {
-    "chalk": "^5.0.1",
+    "chalk": "^4.0.0",
     "commander": "^9.3.0",
     "dotenv": "^16.0.1",
     "fs-extra": "^10.1.0",
     "inquirer": "^8.2.4",
-    "ora": "^6.1.0"
-  }
+    "ora": "^3.0.0"
+  },
+  "author": "xueyunfeng<pinus0716@163.com>",
+  "license": "MIT"
 }
