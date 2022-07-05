@@ -1,15 +1,10 @@
-import fs from "fs-extra";
-import path from "path";
-import { error, success, info } from "../util/logger.js";
-import ora from "ora";
-import inquirer from "inquirer";
-import { execSync, exec } from "child_process";
-import { fileURLToPath } from "url";
-import process from "process";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const workdirname = process.cwd();
+const fs = require("fs-extra");
+const inquirer = require("inquirer");
+const ora = require("ora");
+const { error, success, info } = require("../util/logger.js");
+const path = require("path");
+const { execSync, exec } = require("child_process");
+const buildForDeploy = require("../util/build.js");
 
 const initProject = () => {
 	fs.mkdir(path.join("", "./webapp"), (err) => {
@@ -20,7 +15,7 @@ const initProject = () => {
 		success(`webapp文件创建成功`);
 		const spinner = ora("加载webapp部署配置文件...\n").start();
 
-		const templatePath = path.resolve(__dirname, `../template`);
+		const templatePath = path.resolve(__dirname, `../template`); // 模板所在路径
 		const projectPath = path.join("", `./webapp`);
 		fs.copy(templatePath, projectPath, (err) => {
 			spinner.stop();
@@ -90,50 +85,4 @@ const pullCode = () => {
 		});
 };
 
-/*
- * 编译并部署
- */
-const buildForDeploy = () => {
-	const question = [
-		{
-			type: "confirm",
-			name: "isBuildCode",
-			message: `是否立即编译镜像？`,
-		},
-	];
-
-	inquirer.prompt(question).then(async (answers) => {
-		if (answers.isBuildCode) {
-			const spinner = ora("开始编译项目...\n").start();
-
-			// 确保.env文件存在
-			fs.ensureFileSync(path.join("", "./webapp/.env"));
-			// 获取版本号
-			const back_commit = execSync("git rev-parse --short HEAD", {
-				cwd: path.join("", "./webapp/backend/backend-service"),
-			}).toString();
-			const middle_commit = execSync("git rev-parse --short HEAD", {
-				cwd: path.join("", "./webapp/middle/qingyun-middle"),
-			}).toString();
-			const blog_commit = execSync("git rev-parse --short HEAD", {
-				cwd: path.join("", "./webapp/frontend/blog-front"),
-			}).toString();
-			// console.log("当前git版本号:", back_commit, middle_commit, blog_commit);
-
-			// 保存进.env使其能够在docker-compose中被引用
-			await fs.writeFile(
-				"./webapp/.env",
-				`BACKEND_COMMIT=${back_commit}\nMIDDLE_COMMIT=${middle_commit}\nBLOG_COMMIT=${blog_commit}\n`
-			);
-
-			execSync("docker-compose up", {
-				cwd: path.join("", "./webapp"),
-				stdio: "inherit",
-			});
-
-			spinner.stop();
-		}
-	});
-};
-
-export default initProject;
+module.exports = initProject;

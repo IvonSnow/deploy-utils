@@ -1,10 +1,9 @@
-#!/usr/bin/node
-import chalk from "chalk";
-import { Command } from "commander";
-import initProject from "./script/init.js";
-import clearProject from "./script/clear.js";
-
-const program = new Command();
+#!/usr/bin/env node
+const chalk = require("chalk");
+const { program } = require("commander");
+const initProject = require("./script/init.js");
+const clearProject = require("./script/clear.js");
+const updateApp = require("./script/up.js");
 
 console.log();
 console.log(chalk.yellow("===== D E P L O Y - U T I L ====="));
@@ -32,9 +31,24 @@ program
 program
 	.command("up")
 	.description("pull code, build and deploy")
-	.option("-p, --pull <char>", "only pull code")
-	.action(({ pull }) => {
-		console.log(pull);
+	.option("-a, --app <char>", "slecet the app to pull and build")
+	.option(
+		"-v, --version <char>",
+		"the version to pull and build, default latest, can be used to rollback "
+	)
+	.action(({ app, version }) => {
+		if (!app) {
+			console.error("must has a target app, e.g. -a | --app blog");
+		}
+		if (!(app === "frontend" || app === "middle" || app === "backend")) {
+			console.error("仅支持frontend, middle, backend之一");
+			return;
+		}
+		if (!version) {
+			version = "latest";
+		}
+
+		updateApp(app, version);
 	});
 
 // 必要，否则上面的不起效

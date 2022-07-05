@@ -1,7 +1,10 @@
-import chalk from "chalk";
+const chalk = require("chalk");
+const readline = require("readline");
 
+// 用另一个字符串填充当前字符串(重复，如果需要的话)，以便产生的字符串达到给定的长度。
 const padStart = String.prototype.padStart;
 
+// 处理换行
 const format = (label, msg) =>
 	msg
 		.split("\n")
@@ -12,41 +15,61 @@ const format = (label, msg) =>
 
 const chalkTag = (msg) => chalk.bgBlackBright.white.dim(` ${msg} `);
 
-export function info(msg, tag = null) {
+exports.log = (msg = "", tag = null) => {
+	if (tag) {
+		console.log(format(chalkTag(tag), msg));
+	} else {
+		console.log(msg);
+	}
+};
+
+exports.info = (msg, tag = null) => {
 	console.log(
 		format(
 			`${chalk.bgCyan.black(" INFO ")}${tag ? chalkTag(tag) : ""}`,
 			chalk.cyan(` ♫ ${msg}`)
 		)
 	);
-}
+};
 
-export function success(msg, tag = null) {
+exports.success = (msg, tag = null) => {
 	console.log(
 		format(
 			`${chalk.bgGreen.black(" DONE ")}${tag ? chalkTag(tag) : ""}`,
 			` ✔ ${msg}`
 		)
 	);
-}
+};
 
-export function warn(msg, tag = null) {
+exports.warn = (msg, tag = null) => {
 	console.warn(
 		format(
 			`${chalk.bgYellow.black(" WARN ")}${tag ? chalkTag(tag) : ""}`,
 			chalk.yellow(` ❣ ${msg}`)
 		)
 	);
-}
+};
 
-export function error(msg, tag = null) {
+exports.error = (msg, tag = null) => {
 	console.error(
 		format(
-			`${chalk.bgRed(" ERROR ")}${tag ? chalkTag(tag) : ""}`,
+			`${chalk.bgRed(" ERROR")}${tag ? chalkTag(tag) : ""}`,
 			chalk.red(` ✘ ${msg}`)
 		)
 	);
 	if (msg instanceof Error) {
 		console.error(msg.stack);
 	}
-}
+};
+
+exports.clearConsole = (title) => {
+	if (process.stdout.isTTY) {
+		const blank = "\n".repeat(process.stdout.rows);
+		console.log(blank);
+		readline.cursorTo(process.stdout, 0, 0);
+		readline.clearScreenDown(process.stdout);
+		if (title) {
+			console.log(title);
+		}
+	}
+};

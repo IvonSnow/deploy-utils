@@ -1,12 +1,20 @@
 version: "3"
 services:
+  proxy:
+    container_name: proxy_nginx
+    build: ./proxy
+    image: proxy_nginx
+    ports: 
+      - 80:80
+    restart: always
+
   db:
     container_name: mysql_backend
     image: mysql:5.7
     ports:
-      - 6000:3306
+      - 3306:3306
     volumes:
-      - E:\projects\mysql:/var/lib/mysql
+      - /home/work/mysql:/var/lib/mysql
     restart: always
     environment:
       MYSQL_DATABASE: webapp_db
