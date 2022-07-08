@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY ./backend-service/package.json .
 COPY ./backend-service/yarn.lock  .
-RUN yarn --registry https://registry.npm.taobao.org/
+RUN yarn --production --registry https://registry.npm.taobao.org/
 
 COPY ./backend-service .
 EXPOSE 7001

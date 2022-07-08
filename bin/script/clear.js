@@ -70,10 +70,31 @@ const clearProject = async () => {
 							}
 						);
 					} catch (err) {}
+
+					try {
+						execSync(
+							"docker rmi $(docker images | grep 'proxy_nginx' | awk '{print $3}')",
+							{
+								stdio: "inherit",
+							}
+						);
+					} catch (err) {}
+
 					spinner_image.stop();
 
 					// 清除文件夹
 					await fs.remove("./webapp");
+
+					// 显示现在的容器和镜像
+					try {
+						execSync("docker ps", {
+							stdio: "inherit",
+						});
+
+						execSync("docker images", {
+							stdio: "inherit",
+						});
+					} catch (err) {}
 
 					spinner.stop();
 					success("webapp已清理");

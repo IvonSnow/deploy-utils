@@ -86,10 +86,8 @@ const updateApp = async (app, version) => {
 				// 3 编译镜像部署容器
 				buildForDeploy();
 
-				// 4 删除<none>
-				try {
-					execSync("docker system prune -f");
-				} catch (e) {}
+				// 4 清理可能存在的无用项
+				clearNone();
 			}
 		});
 	});
