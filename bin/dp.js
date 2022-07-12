@@ -12,7 +12,7 @@ console.log();
 program
 	.name("deploy-util")
 	.description("util for updaete code, build images, deploy by docker")
-	.version("0.1.0");
+	.version("0.1.22");
 
 program
 	.command("init")
@@ -40,8 +40,9 @@ program
 		if (!app) {
 			console.error("must has a target app, e.g. -a | --app blog");
 		}
-		if (!(app === "frontend" || app === "middle" || app === "backend")) {
-			console.error("仅支持frontend, middle, backend之一");
+		const cmds = ["frontend", "middle", "backend", "home"];
+		if (!cmds.includes(app)) {
+			console.error(`仅支持${cmds.join("|")}之一`);
 			return;
 		}
 		if (!version) {

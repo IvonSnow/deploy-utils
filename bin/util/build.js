@@ -33,12 +33,15 @@ const buildForDeploy = () => {
 			const blog_commit = execSync("git rev-parse --short HEAD", {
 				cwd: path.join("", "./webapp/frontend/blog-front"),
 			}).toString();
+			const home_commit = execSync("git rev-parse --short HEAD", {
+				cwd: path.join("", "./webapp/home/web-home"),
+			}).toString();
 			// console.log("当前git版本号:", back_commit, middle_commit, blog_commit);
 
 			// 保存进.env使其能够在docker-compose中被引用
 			await fs.writeFile(
 				"./webapp/.env",
-				`BACKEND_COMMIT=${back_commit}\nMIDDLE_COMMIT=${middle_commit}\nBLOG_COMMIT=${blog_commit}\n`
+				`BACKEND_COMMIT=${back_commit}\nMIDDLE_COMMIT=${middle_commit}\nBLOG_COMMIT=${blog_commit}\nHOME_COMMIT=${home_commit}\n`
 			);
 
 			execSync("docker-compose up -d", {

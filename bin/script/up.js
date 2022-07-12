@@ -6,6 +6,7 @@ const { execSync } = require("child_process");
 const path = require("path");
 const process = require("process");
 const buildForDeploy = require("../util/build.js");
+const clearNone = require("../util/clearNone.js");
 
 // 从.env文件中加载环境变量
 require("dotenv").config({ path: path.join("", "./webapp/.env") });
@@ -41,6 +42,9 @@ const updateApp = async (app, version) => {
 					} else if (app === "frontend") {
 						containerName = "blog_front";
 						imageName = `blog:${process.env.BLOG_COMMIT}`;
+					} else if (app === "home") {
+						containerName = "web_home";
+						imageName = `home:${process.env.HOME_COMMIT}`;
 					} else {
 						error("无效的app:" + app);
 						return;
@@ -67,6 +71,7 @@ const updateApp = async (app, version) => {
 				app === "backend" && (appName = "backend-service");
 				app === "middle" && (appName = "qingyun-middle");
 				app === "frontend" && (appName = "blog-front");
+				app === "home" && (appName = "web-home");
 
 				if (version === "latest") {
 					// 获取最新的代码

@@ -69,6 +69,13 @@ const pullCode = () => {
 				});
 				spinner_blog.stop();
 
+				const spinner_home = ora("clone web-home\n").start();
+				execSync("git clone git@github.com:IvonSnow/web-home.git", {
+					cwd: path.join("", "./webapp/home"),
+					stdio: "inherit",
+				});
+				spinner_home.stop();
+
 				spinner.stop();
 				success("代码拉取成功");
 				buildForDeploy();

@@ -45,5 +45,13 @@ services:
     ports:
       - 3000:3000
     restart: always
+  
+  home:
+    container_name: web_home
+    build: ./home
+    image: home:$HOME_COMMIT
+    ports:
+      - 3001:3001
+    restart: always
 
   

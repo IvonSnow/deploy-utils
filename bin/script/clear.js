@@ -73,6 +73,15 @@ const clearProject = async () => {
 
 					try {
 						execSync(
+							"docker rmi $(docker images | grep 'home' | awk '{print $3}')",
+							{
+								stdio: "inherit",
+							}
+						);
+					} catch (err) {}
+
+					try {
+						execSync(
 							"docker rmi $(docker images | grep 'proxy_nginx' | awk '{print $3}')",
 							{
 								stdio: "inherit",
