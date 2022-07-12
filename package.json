@@ -1,6 +1,6 @@
 {
   "name": "deploy-util",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "bin": "bin/dp.js",
   "scripts": {
     "clear": "node ./bin/dp.js clear",
@@ -16,5 +16,9 @@
     "ora": "^3.0.0"
   },
   "author": "xueyunfeng<pinus0716@163.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:IvonSnow/deploy-utils.git"
+  }
 }
